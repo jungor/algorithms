@@ -16,3 +16,10 @@ void print_array(int nums[], int len) {
     }
     printf("]\n");
 }
+
+void swap(int nums[], int a, int b) {
+    if (a == b) return;
+    int tmp = nums[a];
+    nums[a] = nums[b];
+    nums[b] = tmp;
+}

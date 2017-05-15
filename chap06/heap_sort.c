@@ -5,6 +5,7 @@
 
 #include "heap_sort.h"
 #include <limits.h>
+#include "../utils.h"
 /**
  * 维护堆的性质
  * 前置条件：i的左右子树都已经是最大堆
@@ -24,9 +25,7 @@ void max_heapify(int nums[], int heap_size, int i) {
         max = r;
     }
     if (max != i) {
-        int tmp = nums[i];
-        nums[i] = nums[max];
-        nums[max] = tmp;
+        swap(nums, i, max);
         max_heapify(nums, heap_size, max);
     }
 }

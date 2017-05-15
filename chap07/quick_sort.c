@@ -4,15 +4,25 @@
  */
 
 #include "quick_sort.h"
+#include "../utils.h"
 
-int partition(int nums[], int len) {
-    int small_top = -1;
-    int key = nums[len-1];
-    for (int i = 0; i < len; i++) {
-        if ()
+int partition(int nums[], int begin, int end) {
+    int small_top = begin;
+    int key = nums[end-1];
+    for (int i = begin; i < end; i++) {
+        if (nums[i] < key) {
+            swap(nums, small_top, i);
+            small_top++;
+        }
     }
+    swap(nums, small_top, end-1);
+    return small_top;
 }
 
-void quick_sort(int nums[], int len) {
-
+void quick_sort(int nums[], int begin, int end) {
+    if (begin < end) {
+        int p = partition(nums, begin, end);
+        quick_sort(nums, begin, p);
+        quick_sort(nums, p+1, end);
+    }
 }

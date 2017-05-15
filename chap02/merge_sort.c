@@ -4,6 +4,7 @@
  */
 #include <limits.h>
 #include <stdlib.h>
+#include "../utils.h"
 void merge_sort(int nums[], int len) {
     if (len == 1) return;
     int mid = len/2;
