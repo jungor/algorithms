@@ -30,3 +30,6 @@
 
 # Stackdump
 *.stackdump
+
+# Dependency ifles
+*.d

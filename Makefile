@@ -1,36 +1,42 @@
-#IDIR =.
-#CC=gcc
-#CFLAGS=-I$(IDIR)
-
-#ODIR=obj
-#LDIR =../lib
-
-#LIBS=-lm
-
-_DEPS = utils.h
-#DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
-DEPS = $(_DEPS)
-
 BIN = main
 
-_OBJ = $(BIN).c utils.c $(subst ./, ,$(wildcard ./chap*/*.c))
-#OBJ = $(patsubst %.c,$(ODIR)/%.o,$(_OBJ))
-OBJ = $(patsubst %.c, %.o, $(_OBJ))
+SRCS = $(BIN).c utils.c $(subst ./, ,$(wildcard ./chap*/*.c))
+OBJS = $(patsubst %.c, %.o, $(SRCS))
 
-$(BIN): $(OBJ)
-	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
+CC      = gcc 
+CFLAGS  = -Wall -g
+INCLUDEFLAGS = 
+LDFLAGS = 
+TARGET = main
 
-#$(BIN).o: main.c $(DEPS)
-#	$(CC) -c -o $@ $< $(CFLAGS)
+.PHONY:run
+run: all
+	./$(TARGET)
 
-%.o: %.c %.h $(DEPS)
-	$(CC) -c -o $@ $< $(CFLAGS)
+.PHONY:all 
+all: $(TARGET)
 
-.PHONY: clean run
+$(TARGET): $(OBJS)
+	$(CC) -o $@ $^ $(LDFLAGS)
 
-run:
-	./$(BIN)
+%.o:%.c
+	$(CC) -o $@ -c $< $(CFLAGS) $(INCLUDEFLAGS)
 
+%.d:%.c
+	@set -e; rm -f $@; $(CC) -MM $< $(INCLUDEFLAGS) > $@.$$$$; \
+	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
+	rm -f $@.$$$$
+
+-include $(OBJS:.o=.d)
+
+.PHONY:clean
 clean:
-	#rm -f $(ODIR)/*.o *~ core $(INCDIR)/*~ 
-	rm -f $(OBJ) $(BIN)
+	rm -f $(TARGET) $(OBJS) **/*.d **/*.d.*
+
+.PHONY:debug
+debug:
+	gdb $(TARGET)
+
+.PHONY:dump
+dump:
+	less $(TARGET).exe.stackdump
