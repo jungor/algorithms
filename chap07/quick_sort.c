@@ -7,9 +7,6 @@
 #include "../utils.h"
 #include <stdlib.h>
 
-static int partition(int nums[], int begin, int end);
-static int randomized_partition(int nums[], int begin, int end);
-
 int partition(int nums[], int begin, int end) {
     int small_top = begin;
     int key = nums[end-1];
