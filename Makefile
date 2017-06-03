@@ -1,22 +1,27 @@
-BIN = main
-
-SRCS = $(BIN).c utils.c $(subst ./, ,$(wildcard ./chap*/*.c))
+ALLSRCS = utils.c $(subst ./,,$(wildcard ./chap*/*.c))
+TESTSRCS = $(subst ./,,$(wildcard ./chap*/test*.c))
+SRCS = $(filter-out $(TESTSRCS), $(ALLSRCS))
+ALLOBJS = $(patsubst %.c, %.o, $(ALLSRCS))
 OBJS = $(patsubst %.c, %.o, $(SRCS))
 
 CC      = gcc 
 CFLAGS  = -Wall -g
 INCLUDEFLAGS = 
-LDFLAGS = 
+LDFLAGS = -lcunit
 TARGET = main
+TEST = test
 
 .PHONY:run
 run: all
-	./$(TARGET)
+	./$(TEST)
 
 .PHONY:all 
-all: $(TARGET)
+all: $(TARGET) $(TEST)
 
-$(TARGET): $(OBJS)
+$(TARGET): $(addsuffix .o, $(TARGET)) $(OBJS)
+	$(CC) -o $@ $^ $(LDFLAGS)
+
+$(TEST): $(addsuffix .o, $(TEST)) $(ALLOBJS)
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 %.o:%.c
@@ -40,3 +45,10 @@ debug:
 .PHONY:dump
 dump:
 	less $(TARGET).exe.stackdump
+.PHONY:var
+var:
+	@echo ALLSRCS: $(ALLSRCS)
+	@echo TESTSRCS: $(TESTSRCS)
+	@echo SRCS: $(SRCS)
+	@echo ALLOBJS: $(ALLOBJS)
+	@echo OBJS: $(OBJS)

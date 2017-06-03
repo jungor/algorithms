@@ -54,7 +54,6 @@ obst_slt_t optimal_bst(double p[], double q[], int n) {
             }
         }
     }
-    printf("%lf\n", e[1][n]);
     return slt;
 }
 
