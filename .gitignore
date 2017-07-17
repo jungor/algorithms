@@ -28,8 +28,22 @@
 *.out
 *.app
 
+## Add By JunGor
+
 # Stackdump
 *.stackdump
 
-# Dependency ifles
+# Dependency files
 *.d
+
+# Bin files
+main
+test
+
+# Tags files
+tags
+
+# YCM Config files
+compile_commands.json
+.ycm_extra_conf.py
+.color_coded

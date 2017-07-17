@@ -1,10 +1,12 @@
 #include "chap02/test_insertion_sort.h"
+#include "chap02/test_merge_sort.h"
+#include "chap04/test_maximum_subarray.h"
 #include "chap15/test_optimal_binary_search_tree.h"
 #include "utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <CUnit/console.h>
+#include <CUnit/Console.h>
 
 int main() {
     srand(time(NULL));
@@ -20,8 +22,10 @@ int main() {
     //assert(!CU_is_test_running());
 
     //注册各个suite
-    CHECK_CU_RETURN(add_test_obst());
     CHECK_CU_RETURN(add_test_insertion_sort());
+    CHECK_CU_RETURN(add_test_merge_sort());
+    CHECK_CU_RETURN(add_test_maximum_subarray());
+    CHECK_CU_RETURN(add_test_obst());
 
     //使用console控制交互界面的函数入口
     CU_console_run_tests();

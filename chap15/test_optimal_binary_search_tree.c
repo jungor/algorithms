@@ -1,7 +1,7 @@
 #include "optimal_binary_search_tree.h"
 #include "../utils.h"
 #include <CUnit/CUnit.h>
-#include <CUnit/console.h>
+#include <CUnit/Console.h>
 #include <stdio.h>
 
 static int InitSuite() {
@@ -28,7 +28,7 @@ CU_ErrorCode add_test_obst() {
      * 2. Suite名字 : testSuite
      * 3. InitSuite EndSuite：分别是测试单元初始和释放函数，如不需要则NULL传递
      ****************/
-    pSuite = CU_add_suite("TestOBST", InitSuite, EndSuite);
+    pSuite = CU_add_suite("optimal_bst", InitSuite, EndSuite);
     CHECK_CU_GLOBAL();
 
     /***************

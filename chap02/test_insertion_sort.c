@@ -17,7 +17,7 @@ static void test_insertion_sort() {
 }
 
 CU_ErrorCode add_test_insertion_sort() {
-    CU_pSuite pSuite = CU_add_suite("SuitInsertionSort", NULL, NULL);
+    CU_pSuite pSuite = CU_add_suite("insertion_sort", NULL, NULL);
     CHECK_CU_GLOBAL();
     CU_ADD_TEST(pSuite, test_insertion_sort);
     CHECK_CU_GLOBAL();

@@ -1,3 +1,4 @@
+ALLFILES = $(subst ./,,$(wildcard ./chap*/*.[ch]) $(wildcard ./*.[ch]))
 ALLSRCS = utils.c $(subst ./,,$(wildcard ./chap*/*.c))
 TESTSRCS = $(subst ./,,$(wildcard ./chap*/test*.c))
 SRCS = $(filter-out $(TESTSRCS), $(ALLSRCS))
@@ -5,27 +6,26 @@ ALLOBJS = $(patsubst %.c, %.o, $(ALLSRCS))
 OBJS = $(patsubst %.c, %.o, $(SRCS))
 
 CC      = gcc 
-CFLAGS  = -Wall -g
+CFLAGS  = -Wall -g -std=gnu99
 INCLUDEFLAGS = 
 LDFLAGS = -lcunit
 TARGET = main
 TEST = test
 
-.PHONY:run
-run: all
-	./$(TEST)
-
 .PHONY:all 
-all: $(TARGET) $(TEST)
+all: $(TARGET) $(TEST) tags
 
 $(TARGET): $(addsuffix .o, $(TARGET)) $(OBJS)
-	$(CC) -o $@ $^ $(LDFLAGS)
+	@$(CC) -o $@ $^ $(LDFLAGS)
 
 $(TEST): $(addsuffix .o, $(TEST)) $(ALLOBJS)
-	$(CC) -o $@ $^ $(LDFLAGS)
+	@$(CC) -o $@ $^ $(LDFLAGS)
+
+tags: $(ALLFILES)
+	@ctags -R .
 
 %.o:%.c
-	$(CC) -o $@ -c $< $(CFLAGS) $(INCLUDEFLAGS)
+	@$(CC) -o $@ -c $< $(CFLAGS) $(INCLUDEFLAGS)
 
 %.d:%.c
 	@set -e; rm -f $@; $(CC) -MM $< $(INCLUDEFLAGS) > $@.$$$$; \
@@ -36,17 +36,23 @@ $(TEST): $(addsuffix .o, $(TEST)) $(ALLOBJS)
 
 .PHONY:clean
 clean:
-	rm -f $(TARGET) $(OBJS) **/*.d **/*.d.*
+	@rm -f $(TARGET) $(OBJS) **/*.d **/*.d.*
 
 .PHONY:debug
 debug:
-	gdb $(TARGET)
+	@gdb $(TEST)
 
 .PHONY:dump
 dump:
-	less $(TARGET).exe.stackdump
+	@less $(TARGET).exe.stackdump
+
+.PHONY:run
+run: all
+	@./$(TEST)
+
 .PHONY:var
 var:
+	@echo ALLFILES: $(ALLFILES)
 	@echo ALLSRCS: $(ALLSRCS)
 	@echo TESTSRCS: $(TESTSRCS)
 	@echo SRCS: $(SRCS)
