@@ -16,7 +16,6 @@ static void test_maximum_subarray() {
     CU_ASSERT_EQUAL(slt.sum, 43);
     int nums2[] = {1, 2, -3, 1};
     slt = maximum_subarray(nums2, 0, sizeof(nums2)/sizeof(int), MSA_PLC_LINEAR);
-    printf("%d, %d, %d\n", slt.left, slt.right, slt.sum);
     CU_ASSERT_EQUAL(slt.left, 0);
     CU_ASSERT_EQUAL(slt.right, 1);
     CU_ASSERT_EQUAL(slt.sum, 3);

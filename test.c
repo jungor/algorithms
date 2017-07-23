@@ -1,6 +1,7 @@
 #include "chap02/test_insertion_sort.h"
 #include "chap02/test_merge_sort.h"
 #include "chap04/test_maximum_subarray.h"
+#include "chap06/test_heap_sort.h"
 #include "chap15/test_optimal_binary_search_tree.h"
 #include "utils.h"
 #include <stdio.h>
@@ -25,6 +26,7 @@ int main() {
     CHECK_CU_RETURN(add_test_insertion_sort());
     CHECK_CU_RETURN(add_test_merge_sort());
     CHECK_CU_RETURN(add_test_maximum_subarray());
+    CHECK_CU_RETURN(add_test_heap_sort());
     CHECK_CU_RETURN(add_test_obst());
 
     //使用console控制交互界面的函数入口
