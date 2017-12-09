@@ -4,6 +4,8 @@
  */
 #include "utils.h"
 #include <stdio.h>
+#include <math.h>
+
 void print_array(int nums[], int len) {
     printf("[");
     for (int i = 0; i < len; i++) {
@@ -40,6 +42,7 @@ void swap(int nums[], int a, int b) {
     nums[a] = nums[b];
     nums[b] = tmp;
 }
+
 int maxnum(int a, int b) {
     if (a > b) {
         return a;
@@ -47,6 +50,7 @@ int maxnum(int a, int b) {
         return b;
     }
 }
+
 int minnum(int a, int b) {
     if (a < b) {
         return a;
@@ -54,3 +58,17 @@ int minnum(int a, int b) {
         return b;
     }
 }
+
+
+int get_ith_dgt(int num, int i) {
+    return num % (int)pow(10, i+1) / (int)pow(10, i); 
+}
+
+int get_dgt_cnt(int num) {
+    int i = 1;
+    while (num > pow(10, i)-1) {
+        i++;
+    }
+    return i;
+}
+

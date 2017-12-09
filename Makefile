@@ -8,7 +8,7 @@ OBJS = $(patsubst %.c, %.o, $(SRCS))
 CC      = gcc 
 CFLAGS  = -Wall -g -std=gnu99
 INCLUDEFLAGS = 
-LDFLAGS = -lcunit
+LDFLAGS = -lcunit -lm
 TARGET = main
 TEST = test
 
@@ -39,7 +39,7 @@ clean:
 	@rm -f $(TARGET) $(OBJS) **/*.d **/*.d.*
 
 .PHONY:debug
-debug:
+debug: all
 	@gdb $(TEST)
 
 .PHONY:dump
