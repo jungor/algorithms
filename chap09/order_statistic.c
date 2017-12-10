@@ -65,13 +65,16 @@ int median_of_medians(int nums[], int begin, int end) {
             part[j] = nums[i*5+j];
         }
         int part_len = 5;
-        if (i > len / 5) {
+        if (i == parts_count-1) {
             part_len = last_part_len;
         }
+        // 这里可以直接使用插入排序确定每组的中位数
+        // 树上就是这样做而且证明这样整个算法还是最坏线性
+        // 我的理解是因为每组的大小是常数
         insertion_sort(part, part_len);
-        medians[i] = part[part_len/2];
+        medians[i] = part[(part_len-1)/2];
     }
-    int mm = linear_select(medians, 0, parts_count, parts_count/2);
+    int mm = medians[(parts_count-1)/2];
     free(medians);
     return mm;
 }
@@ -98,9 +101,9 @@ int linear_select(int nums[], int begin, int end, int i) {
     if (len == 1) {
         return nums[begin];
     }
-    // index of median_of_medians
-    int imm = median_of_medians(nums, begin, end);
-    int q = specified_partition(nums, begin, end, imm);
+    // median_of_medians
+    int mm = median_of_medians(nums, begin, end);
+    int q = specified_partition(nums, begin, end, mm);
     int left_len = q - begin;
     if (i == left_len) {
         return nums[q];

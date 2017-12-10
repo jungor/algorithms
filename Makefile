@@ -21,12 +21,15 @@ $(TARGET): $(addsuffix .o, $(TARGET)) $(OBJS)
 $(TEST): $(addsuffix .o, $(TEST)) $(ALLOBJS)
 	@$(CC) -o $@ $^ $(LDFLAGS)
 
+# 要么把所有源文件加到依赖；要么设为phony。
+# 否则首次生成过tags之后后续会因为已存在不再生成
 tags: $(ALLFILES)
 	@ctags -R .
 
 %.o:%.c
 	@$(CC) -o $@ -c $< $(CFLAGS) $(INCLUDEFLAGS)
 
+# 使用gcc的-MM选项自动生成各源文件的依赖
 %.d:%.c
 	@set -e; rm -f $@; $(CC) -MM $< $(INCLUDEFLAGS) > $@.$$$$; \
 	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \

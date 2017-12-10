@@ -5,10 +5,10 @@
 #include <stdlib.h>
 
 static void test_counting_sort() {
-    int len = 10;
+    int len = 100;
     int nums[len];
     for (int i = 0; i < len; i++) {
-        nums[i] = rand() % len;
+        nums[i] = rand() % COUNTING_SORT_NUM_MAX;
     }
     counting_sort(nums, len);
     for (int i = 1; i < len; i++) {

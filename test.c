@@ -5,6 +5,7 @@
 #include "chap07/test_quick_sort.h"
 #include "chap08/test_counting_sort.h"
 #include "chap08/test_radix_sort.h"
+#include "chap09/test_order_statistic.h"
 #include "chap15/test_optimal_binary_search_tree.h"
 #include "utils.h"
 #include <stdio.h>
@@ -33,6 +34,7 @@ int main() {
     CHECK_CU_RETURN(add_test_quick_sort());
     CHECK_CU_RETURN(add_test_counting_sort());
     CHECK_CU_RETURN(add_test_radix_sort());
+    CHECK_CU_RETURN(add_test_order_statistic());
     CHECK_CU_RETURN(add_test_obst());
 
     //使用console控制交互界面的函数入口

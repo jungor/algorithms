@@ -29,4 +29,5 @@ int maxnum(int a, int b);
 int minnum(int a, int b);
 int get_ith_dgt(int num, int i);
 int get_dgt_cnt(int num);
+void shuffle(int nums[], int len);
 #endif

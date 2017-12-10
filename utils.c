@@ -4,6 +4,7 @@
  */
 #include "utils.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 
 void print_array(int nums[], int len) {
@@ -70,5 +71,12 @@ int get_dgt_cnt(int num) {
         i++;
     }
     return i;
+}
+
+void shuffle(int nums[], int len) {
+    // 最后一个位置自动确定了
+    for (int i = len-1; i > 0; i--) {
+        swap(nums, i, rand()%(i+1));
+    }   
 }
 
