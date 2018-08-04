@@ -1,63 +1,61 @@
-ALLFILES = $(subst ./,,$(wildcard ./chap*/*.[ch]) $(wildcard ./*.[ch]))
-ALLSRCS = utils.c $(subst ./,,$(wildcard ./chap*/*.c))
-TESTSRCS = $(subst ./,,$(wildcard ./chap*/test*.c))
-SRCS = $(filter-out $(TESTSRCS), $(ALLSRCS))
-ALLOBJS = $(patsubst %.c, %.o, $(ALLSRCS))
-OBJS = $(patsubst %.c, %.o, $(SRCS))
+CC=gcc
+CFLAGS=-Wall -g -std=gnu99
+INCLUDEFLAGS=
+# 注意链接参数必须放在目标后面
+LDLIBS=-lcunit -lm
 
-CC      = gcc 
-CFLAGS  = -Wall -g -std=gnu99
-INCLUDEFLAGS = 
-LDFLAGS = -lcunit -lm
+DLTDEP=rm -f *.d chap*/*.d
+
 TARGET = main
-TEST = test
+TESTTG = test_main
+
+TARGETSRC = $(addsuffix .c, $(TARGET))
+TESTTGSRC = $(addsuffix .c, $(TESTTG))
+
+IGNSRCS = play.c
+ALLFILES= $(subst ./, , $(wildcard ./*.[ch]) $(wildcard ./chap*/*.[ch]))
+ALLSRCS = $(filter-out $(IGNSRCS), $(subst ./, , $(wildcard ./*.c) $(wildcard ./chap*/*.c)))
+TSTSRCS = $(subst ./, , $(wildcard ./test*.c) $(wildcard ./chap*/test*.c))
+
+TARGETDEPSRCS = $(filter-out $(TSTSRCS), $(ALLSRCS))
+TESTTGDEPSRCS = $(filter-out $(TARGETSRC), $(ALLSRCS))
+TARGETDEPOBJS = $(patsubst %.c, %.o, $(TARGETDEPSRCS))
+TESTTGDEPOBJS = $(patsubst %.c, %.o, $(TESTTGDEPSRCS))
 
 .PHONY:all 
-all: $(TARGET) $(TEST) tags
+all: $(TARGET) $(TESTTG) tags
 
-$(TARGET): $(addsuffix .o, $(TARGET)) $(OBJS)
-	@$(CC) -o $@ $^ $(LDFLAGS)
+$(TARGET): $(TARGETDEPOBJS)
+	$(CC) -o $@ $^ $(LDLIBS)
+	$(DLTDEP)
 
-$(TEST): $(addsuffix .o, $(TEST)) $(ALLOBJS)
-	@$(CC) -o $@ $^ $(LDFLAGS)
+$(TESTTG): $(TESTTGDEPOBJS)
+	$(CC) -o $@ $^ $(LDLIBS)
+	$(DLTDEP)
 
 # 要么把所有源文件加到依赖；要么设为phony。
 # 否则首次生成过tags之后后续会因为已存在不再生成
 tags: $(ALLFILES)
-	@ctags -R .
+	ctags -R .
 
-%.o:%.c
-	@$(CC) -o $@ -c $< $(CFLAGS) $(INCLUDEFLAGS)
+# %.o: %.c
+	# $(COMPILE) $< -o $@
 
 # 使用gcc的-MM选项自动生成各源文件的依赖
-%.d:%.c
-	@set -e; rm -f $@; $(CC) -MM $< $(INCLUDEFLAGS) > $@.$$$$; \
-	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
-	rm -f $@.$$$$
+%.d: %c
+	$(CC) -MM $< $(INCLUDEFLAGS) | awk '{if ($$1 ~ /o:$$/) $$1 = "$*.o:"; print $$0}' > $@;
 
--include $(OBJS:.o=.d)
+#  导入依赖
+-include $(ALLSRCS:.c=.d)
 
 .PHONY:clean
 clean:
-	@rm -f $(TARGET) $(OBJS) **/*.d **/*.d.*
-
-.PHONY:debug
-debug: all
-	@gdb $(TEST)
-
-.PHONY:dump
-dump:
-	@less $(TARGET).exe.stackdump
+	rm -f $(TARGET) $(TESTTG) $(TARGETDEPOBJS) $(TESTTGDEPOBJS)
 
 .PHONY:run
 run: all
-	@./$(TEST)
+	@./$(TESTTG)
 
 .PHONY:var
 var:
-	@echo ALLFILES: $(ALLFILES)
-	@echo ALLSRCS: $(ALLSRCS)
-	@echo TESTSRCS: $(TESTSRCS)
-	@echo SRCS: $(SRCS)
-	@echo ALLOBJS: $(ALLOBJS)
-	@echo OBJS: $(OBJS)
+	@echo TSTSRCS: $(TSTSRCS)

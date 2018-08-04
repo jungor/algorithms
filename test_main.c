@@ -7,6 +7,7 @@
 #include "chap08/test_radix_sort.h"
 #include "chap09/test_order_statistic.h"
 #include "chap15/test_optimal_binary_search_tree.h"
+#include "chap15/test_longest_common_subsequence.h"
 #include "utils.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,6 +37,7 @@ int main() {
     CHECK_CU_RETURN(add_test_radix_sort());
     CHECK_CU_RETURN(add_test_order_statistic());
     CHECK_CU_RETURN(add_test_obst());
+    CHECK_CU_RETURN(add_test_lcs());
 
     //使用console控制交互界面的函数入口
     CU_console_run_tests();

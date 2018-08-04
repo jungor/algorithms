@@ -21,5 +21,6 @@ typedef struct lcs_slt_s lcs_slt_t;
 void init_lcs_slt(lcs_slt_t *slt, int m, int n);
 void free_lcs_slt(lcs_slt_t *slt);
 lcs_slt_t lcs_length(const char *strx, const char *stry);
+void get_lcs(const char *strx, const char *stry, int i, int j, char *buf);
 
 #endif

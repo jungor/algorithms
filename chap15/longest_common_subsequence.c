@@ -39,7 +39,7 @@ void free_lcs_slt(lcs_slt_t *slt) {
 lcs_slt_t lcs_length(const char *strx, const char *stry) {
     int m = strlen(strx);
     int n = strlen(stry);
-    lcs_slt_t slt;
+    lcs_slt_t slt = {NULL, NULL, 0, 0};
     init_lcs_slt(&slt, m, n);
     int **c = slt.c;
     lcs_slt_dirc_t **b = slt.b;
@@ -60,26 +60,34 @@ lcs_slt_t lcs_length(const char *strx, const char *stry) {
     return slt;
 }
 
-void print_lcs_aux(const char *strx, int i, int j, lcs_slt_dirc_t **b);
+void get_lcs_aux(const char *strx, int i, int j, lcs_slt_dirc_t **b, char *buf, int *idx);
 
-void print_lcs(const char *strx, const char *stry, int i, int j) {
+void get_lcs(const char *strx, const char *stry, int i, int j, char *buf) {
     lcs_slt_t slt = lcs_length(strx, stry);
     lcs_slt_dirc_t **b = slt.b;
-    print_lcs_aux(strx, i, j, b);
-    printf("\n");
+    int idx = 0;
+    get_lcs_aux(strx, i, j, b, buf, &idx);
+    buf[idx] = '\0';
+    for (int i = 0; i <= (idx-1)/2; i++) {
+        char tmp = buf[i];
+        buf[i] = buf[idx-i-1];
+        buf[idx-i-1] = tmp; 
+    }
     free_lcs_slt(&slt);
 }
 
-void print_lcs_aux(const char *strx, int i, int j, lcs_slt_dirc_t **b) {
+void get_lcs_aux(const char *strx, int i, int j, lcs_slt_dirc_t **b, char *buf, int *idx) {
     if (i == 0 || j == 0) {
         return;
     }
     if (b[i][j] == UP_LEFT) {
-        print_lcs_aux(strx, i-1, j-1, b);
+        buf[*idx] = strx[i-1];
+        (*idx)++;
+        get_lcs_aux(strx, i-1, j-1, b, buf, idx);
         printf("%c", strx[i-1]);
     } else if (b[i][j] == UP) {
-        print_lcs_aux(strx, i-1, j, b);
+        get_lcs_aux(strx, i-1, j, b, buf, idx);
     } else {
-        print_lcs_aux(strx, i, j-1, b);
+        get_lcs_aux(strx, i, j-1, b, buf, idx);
     }
 }
