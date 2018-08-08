@@ -15,7 +15,9 @@ void print_array(int nums[], int len) {
         } else {
             printf("%d", nums[i]);
         }
-        if (i !=0 && i%10 == 0) printf("\n");
+        if (((i + 1) % 5 == 0) && (i != len - 1)) {
+            printf("\n");
+        }
     }
     printf("]\n");
 }

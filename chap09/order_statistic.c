@@ -8,6 +8,7 @@
 #include "../chap07/quick_sort.h"
 #include "../utils.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 int minimum(int nums[], int len) {
     int min = nums[0];
@@ -49,7 +50,7 @@ int randomized_select(int nums[], int begin, int end, int i) {
     }
 }
 /**
- * 将数组5个一组进行分组，找出每组的中位数，返回这些中位数的中位数的下标
+ * 将数组5个一组进行分组，找出每组的中位数，返回这些中位数的中位数
  */
 int median_of_medians(int nums[], int begin, int end) {
     int len = end - begin;
@@ -58,15 +59,18 @@ int median_of_medians(int nums[], int begin, int end) {
     int part[5] = {0};
     if (last_part_len > 0) {
         parts_count++;
+    } else {
+        last_part_len = 5;
     }
-    int *medians = malloc(parts_count * sizeof(int));
+    // int *medians = malloc(parts_count * sizeof(int));
+    int medians[parts_count];
     for (int i = 0; i < parts_count; i++) {
-        for (int j = 0; j < 5; j++) {
-            part[j] = nums[i*5+j];
-        }
         int part_len = 5;
         if (i == parts_count-1) {
             part_len = last_part_len;
+        }
+        for (int j = 0; j < part_len; j++) {
+            part[j] = nums[begin+i*5+j];
         }
         // 这里可以直接使用插入排序确定每组的中位数
         // 树上就是这样做而且证明这样整个算法还是最坏线性
@@ -74,8 +78,8 @@ int median_of_medians(int nums[], int begin, int end) {
         insertion_sort(part, part_len);
         medians[i] = part[(part_len-1)/2];
     }
-    int mm = medians[(parts_count-1)/2];
-    free(medians);
+    int mm = linear_select(medians, 0, parts_count, (parts_count-1)/2);
+    // free(medians);
     return mm;
 }
 
@@ -103,6 +107,7 @@ int linear_select(int nums[], int begin, int end, int i) {
     }
     // median_of_medians
     int mm = median_of_medians(nums, begin, end);
+
     int q = specified_partition(nums, begin, end, mm);
     int left_len = q - begin;
     if (i == left_len) {
