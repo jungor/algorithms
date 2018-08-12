@@ -9,13 +9,6 @@
 #include <stdlib.h>
 #include <limits.h>
 
-struct mcm_slt_s {
-    int **s;
-    int **m;
-    int len;
-};
-
-typedef struct mcm_slt_s mcm_slt_t;
 
 void free_mcm_slt(mcm_slt_t slt) {
     for (int i = 0; i < slt.len; i++) {
@@ -27,29 +20,54 @@ void free_mcm_slt(mcm_slt_t slt) {
 }
 
 mcm_slt_t matrix_chain_order(int p[], int n) {
-    int len = n+1;
+    // int len = n+1;
+    // mcm_slt_t slt;
+    // slt.s = malloc(len*sizeof(int*));
+    // slt.m = malloc(len*sizeof(int*));
+    // for (int i = 0; i < len; i++) {
+    //     slt.s[i] = malloc(len*sizeof(int));
+    //     slt.m[i] = malloc(len*sizeof(int));
+    // }
+    // slt.len = n+1;
+    // for (int i = 1; i < len; i++) {
+    //     slt.m[i][i] = 0;
+    // }
+    // for (int l = 1; l < len; l++) {
+    //     for (int i = 1; i < len-l+1; i++) {
+    //         int j = i+l-1;
+    //         slt.m[i][j] = INT_MAX;
+    //         for (int k =i; k < j; k++) {
+    //             int cur = slt.m[i][k] + slt.m[k+1][j] + p[i-1]*p[k]*p[j];
+    //             if (cur < slt.m[i][j]) {
+    //                 slt.m[i][j] = cur;
+    //                 slt.s[i][j] = k;
+    //             }
+    //         }
+    //     }
+    // }
+    // return slt;
+    // 注意matrix_count = n-1;
     mcm_slt_t slt;
-    slt.s = malloc(len*sizeof(int*));
-    slt.m = malloc(len*sizeof(int*));
-    for (int i = 0; i < len; i++) {
-        slt.s[i] = malloc(len*sizeof(int));
-        slt.m[i] = malloc(len*sizeof(int));
+    slt.s = malloc(n*sizeof(int*));
+    slt.m = malloc(n*sizeof(int*));
+    for (int i = 0; i < n; i++) {
+        slt.s[i] = malloc(n*sizeof(int));
+        slt.m[i] = malloc(n*sizeof(int));
     }
-    slt.len = n+1;
-    for (int i = 1; i < len; i++) {
+    slt.len = n;
+    for (int i = 1; i < n; i++) {
         slt.m[i][i] = 0;
     }
-    for (int l = 1; l < len; l++) {
-        for (int i = 1; i < len-l+1; i++) {
-            int j = i+l-1;
-            slt.m[i][j] = INT_MAX;
-            for (int k =i; k < j; k++) {
-                int cur = slt.m[i][k] + slt.m[k+1][j] + p[i-1]*p[k]*p[j];
-                if (cur < slt.m[i][j]) {
-                    slt.m[i][j] = cur;
-                    slt.s[i][j] = k;
+    for (int j = 2; j < n; j++) {
+        for (int i = j-1; i > 0; i--) {
+            int min = INT_MAX;
+            for (int k = i; k < j; k++) {
+                int tmp = slt.m[i][k] + slt.m[k+1][j] + p[i-1]*p[k]*p[j];
+                if (tmp < min) {
+                    min = tmp;
                 }
             }
+            slt.m[i][j] = min;
         }
     }
     return slt;

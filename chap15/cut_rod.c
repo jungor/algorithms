@@ -75,7 +75,7 @@ int bottom_up_cut_rod(int price_table[], int n) {
     for (int i = 1; i <= n; i++) {
         int max = INT_MIN;
         for (int j = 1; j <= i; j++) {
-            int cur = max_table[j] + max_table[i-j];
+            int cur = price_table[j] + max_table[i-j];
             if (cur > max) {
                 max = cur;
             }
@@ -83,6 +83,7 @@ int bottom_up_cut_rod(int price_table[], int n) {
         max_table[i] = max;
     }
     int result = max_table[n];
+    print_array(max_table, n);
     free(max_table);
     return result;
 }

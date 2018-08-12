@@ -13,7 +13,6 @@ static void test_order_statistic() {
     shuffle(nums, len);
     CU_ASSERT(maximum(nums, len) == len-1);
     CU_ASSERT(minimum(nums, len) == 0);
-    printf("\n");
     for (int i = 0; i < 10; i++) {
         // CU_ASSERT(randomized_select(nums, 0, len, i) == i);
         int rst = linear_select(nums, 0, len, i);

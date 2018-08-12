@@ -10,6 +10,7 @@
 int partition(int nums[], int begin, int end) {
     int small_top = begin;
     int key = nums[end-1];
+    // 分组过程可以看作是把比key小的数压栈
     for (int i = begin; i < end; i++) {
         if (nums[i] < key) {
             swap(nums, small_top, i);
