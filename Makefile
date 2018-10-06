@@ -36,7 +36,7 @@ $(TESTTG): $(TESTTGDEPOBJS)
 # 要么把所有源文件加到依赖；要么设为phony。
 # 否则首次生成过tags之后后续会因为已存在不再生成
 tags: $(ALLFILES)
-	ctags -R .
+	ctags .
 
 # %.o: %.c
 	# $(COMPILE) $< -o $@
