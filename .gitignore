@@ -37,8 +37,8 @@
 *.d
 
 # Bin files
-main
-test_main
+algorithms
+test_algorithms
 
 # Tags files
 tags
@@ -51,4 +51,15 @@ compile_commands.json
 ## 我的自定义文件
 play
 play.c
+
+# Cmake生成文件
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
 
