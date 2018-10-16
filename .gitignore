@@ -63,3 +63,6 @@ install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
 
+# Clion files
+.idea
+algorithms.cbp

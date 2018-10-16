@@ -83,7 +83,6 @@ int bottom_up_cut_rod(int price_table[], int n) {
         max_table[i] = max;
     }
     int result = max_table[n];
-    print_array(max_table, n);
     free(max_table);
     return result;
 }
